@@ -34,8 +34,13 @@ export class CarritoService {
     }
 
     eliminar(id: number): void {
-        //Guarda en el arreglo un nuevo arreglo en el que se encuentran todos los elementos que NO coinciden con el id ingresado, excluyendolo.
-        const listaActual = this.carritoSubject.value.filter(p => p.id !== id);
-        this.carritoSubject.next(listaActual);
+        const confirmacion = window.confirm("¿Deseas eliminar este producto de tu carrito de compras?");
+        if (confirmacion) {
+            //Guarda en el arreglo un nuevo arreglo en el que se encuentran todos los elementos que NO coinciden con el id ingresado, excluyendolo.
+            const listaActual = this.carritoSubject.value.filter(p => p.id !== id);
+            this.carritoSubject.next(listaActual);
+        } else {
+            return;
+        }
     }
 }

@@ -28,12 +28,4 @@ export class CarritoComponent {
   eliminar(id:number):void{
     this.carritoService.eliminar(id);
   }
-
-  /*carrito: Producto[] = [];
-
-  constructor(private carritoService:CarritoService){
-    this.carritoService.carrito$.subscribe(data => {
-      this.carrito = data
-    })
-  }*/
 }
