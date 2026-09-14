@@ -1,0 +1,25 @@
+<h2>Carrito de Compras: </h2>
+<!--Usamos ng container para utilizar directivas estructurales sin necesidad de alterar el diseño-->
+<!--Usamos ngIf para capturar el resultado del async pipe-->
+<!--Usamos el pipe async para que se suscriba y desuscriba automaticamente al arreglo observable-->
+<ng-container *ngIf="carrito$ | async as carrito">
+    <p *ngIf="carrito.length === 0">El carrito está vacío.</p>
+    <div *ngIf="carrito.length > 0" class="contenedor-tarjetas">
+        <div class="tarjeta" *ngFor="let c of carrito">
+            <img [src]="c.imagen" [alt]="c.nombre" class="tajeta-imagen">
+            <h3 class="tarjeta-nombre">{{c.nombre}}</h3>
+            <p class="tajeta-descripcion">{{c.descripcion}}</p>
+            <p class="tarjeta-precio">{{c.precio | currency:'GTQ'}}</p>
+            <p>{{c.precio | subtotal: c.cantidad | currency:'GTQ'}}</p>
+            <span>
+                <!--Usamos ngModel para que el valor se actualice de forma reactiva, ngModelChange para que se ejecute el método cada vez que se modifique el valor del campo, y ngModelOptions para decir que el metodo 
+                se actualizará solo hasta que el usuario salga de ese campo o de click en otra parte, esto para evitar que se ejecute en cada tecla presionada-->
+                <input type="number" [(ngModel)]="c.cantidad" [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="cambiarCantidad(c.id, c.cantidad)"
+                    min="1">
+                <button class="tajeta-boton" (click)="eliminar(c.id)">Eliminar</button>
+            </span>
+        </div>
+        <span>Total:</span>
+        <span>{{carrito | total |currency:'GTQ'}}</span>
+    </div>
+</ng-container>

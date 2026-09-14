@@ -1,0 +1,112 @@
+h2 {
+  text-align: center;
+  color: #1e3a5f;
+  margin: 24px 0;
+  font-size: 1.8rem;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+}
+
+p {
+  text-align: center;
+  color: #5a5240;
+  font-size: 1rem;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.contenedor-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 0 24px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  background: #fdf6ec;
+  border: 1px solid #d9c9a3;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(30, 58, 95, 0.15);
+  overflow: hidden;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tajeta-imagen {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  background: #e8dfc8;
+  border-bottom: 3px solid #b8860b;
+}
+
+.tarjeta-nombre {
+  font-size: 1.15rem;
+  color: #1e3a5f;
+  margin: 12px 16px 4px;
+  font-weight: 700;
+}
+
+.tajeta-descripcion {
+  font-size: 0.92rem;
+  color: #5a5240;
+  margin: 0 16px 8px;
+  font-style: italic;
+}
+
+.tarjeta-precio {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #8b8b8b;
+  margin: 0 16px 4px;
+  text-decoration: line-through;
+}
+
+.tarjeta p:not(.tajeta-descripcion):not(.tarjeta-precio) {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #a0522d;
+  margin: 0 16px 8px;
+}
+
+.tarjeta input[type="number"] {
+  width: calc(100% - 32px);
+  margin: 0 16px 12px;
+  padding: 8px;
+  border: 1px solid #d9c9a3;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #fff;
+}
+
+.tajeta-boton {
+  border: none;
+  background: #7a1f1f;
+  color: #fdf6ec;
+  padding: 10px;
+  margin: 0 16px 16px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  cursor: pointer;
+}
+
+.contenedor-tarjetas span {
+  display: block;
+  text-align: right;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #a00a0a;
+  grid-column: 1 / -1;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.contenedor-tarjetas span:first-of-type {
+  color: #5a5240;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-right: 8px;
+}

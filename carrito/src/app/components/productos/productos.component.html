@@ -1,0 +1,10 @@
+<h2>Productos Disponibles: </h2>
+<div class="contenedor-tarjetas">
+    <div class="tarjeta" *ngFor="let p of productos">
+        <img [src]="p.imagen" [alt]="p.nombre" class="tajeta-imagen">
+        <h3 class="tarjeta-nombre">{{p.nombre}}</h3>
+        <p class="tajeta-descripcion">{{p.descripcion}}</p>
+        <p class="tarjeta-precio">{{p.precio | currency:'GTQ'}}</p>
+        <button class="tajeta-boton" (click)="agregar(p)">Agregar al carrito</button>
+    </div>
+</div>
