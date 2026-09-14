@@ -1,59 +1,37 @@
-# Carrito
+# Documentacion:
+`CarritoService` actúa como la única fuente verdadera del estado del carrito, compartida entre `ProductosComponent` y `CarritoComponent` sin que estos se comuniquen directamente entre sí. 
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.3.
+El servicio expone tres operaciones sobre el carrito:
 
-## Development server
+- `agregar(producto)`: añade un producto nuevo con cantidad inicial de 1, o incrementa la cantidad si el producto ya existe en el carrito.
+- `cambiarCantidad(id, cantidad)`: actualiza la cantidad de un producto específico, validando que nunca sea menor a 1.
+- `eliminar(id)`: remueve un producto del carrito por su `id`.
 
-To start a local development server, run:
+En las tres operaciones se aplica inmutabilidad: en lugar de modificar el arreglo existente directamente, se construye un arreglo nuevo (usando el operador spread `...` y `.map()`/`.filter()`). Esto es clave para que Angular detecte los cambios de forma reactiva y para que el patrón Observable reaccione correctamente.
 
-```bash
-ng serve
+## Uso de Observables
+
+El estado del carrito se maneja con un `BehaviorSubject<Producto[]>`
+
+```typescript
+private carritoSubject = new BehaviorSubject<Producto[]>([]);
+carrito$ = this.carritoSubject.asObservable();
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Se eligió `BehaviorSubject` sobre un `Subject` porque mantiene y emite el último valor conocido a cualquier nuevo suscriptor — esto es importante porque `CarritoComponent` necesita recibir inmediatamente el estado actual del carrito, no solo los cambios futuros.
 
-## Code scaffolding
+Cada vez que se llama a `agregar()`, `cambiarCantidad()` o `eliminar()`, el servicio emite un nuevo arreglo con `carritoSubject.next(...)`. `CarritoComponent` se suscribe a `carrito$` mediante el `async` pipe de forma automática en el template:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```html
+*ngIf="carrito$ | async; as carrito"
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Pipes implementados
 
-```bash
-ng generate --help
-```
+- `subtotal`: recibe `precio` y `cantidad`, devuelve `precio * cantidad`. Se aplica por producto.
+- `total`: recibe el array de productos del carrito y devuelve la suma de todos los subtotales. Se aplica al carrito completo.
 
-## Building
+## Ventajas
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Los cálculos viven en la plantilla, lo que mantiene el componente limpio.
+- Los pipes son reutilizables y puros (se recalculan solo cuando cambian sus entradas).
